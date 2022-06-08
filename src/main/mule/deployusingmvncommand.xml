@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="69231fba-26ea-4f87-82f5-1a99c59c4c95" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="deployusingmvncommandFlow" doc:id="c3a25387-88d4-482b-afc1-7017a9472577" >
+		<http:listener doc:name="Listener" doc:id="11fc538c-10cc-4357-ae28-f17cebae45c8" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a6f02cf9-340d-469c-aaf4-53f5c64e7a19" message="start flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="49985afe-395b-49ee-a2a2-aed6fb3b6b2e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"this is mvn command to deploy   mvn clean package deploy -DmuleDeploy"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="332403e7-0d95-4957-bc89-91789a9e010a" message="end flow"/>
+	</flow>
+</mule>
